@@ -37,7 +37,12 @@ namespace WinPathEdit
                 return false;
             }
             string newPathVar = ConvertDataSetToString();
-            Environment.SetEnvironmentVariable("path", newPathVar, EnvironmentVariableTarget.Process);
+
+            if (System.Windows.Forms.MessageBox.Show(form, newPathVar, "Is this correct?", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk) == System.Windows.Forms.DialogResult.Yes)
+            {
+                return true;
+                Environment.SetEnvironmentVariable("path", newPathVar, EnvironmentVariableTarget.Process);
+            }
             return false;
         }
 
