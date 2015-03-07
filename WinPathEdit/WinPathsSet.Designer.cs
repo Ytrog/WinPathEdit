@@ -393,9 +393,6 @@ namespace WinPathEdit {
             private void InitClass() {
                 this.columnVar = new global::System.Data.DataColumn("Var", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVar);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnVar}, false));
-                this.columnVar.Unique = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

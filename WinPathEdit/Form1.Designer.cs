@@ -60,6 +60,8 @@
             // 
             // Paths
             // 
+            this.Paths.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Paths.DataPropertyName = "Var";
             this.Paths.HeaderText = "Paths";
             this.Paths.Name = "Paths";
             // 

@@ -38,10 +38,10 @@ namespace WinPathEdit
             }
             string newPathVar = ConvertDataSetToString();
 
-            if (System.Windows.Forms.MessageBox.Show(form, newPathVar, "Is this correct?", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk) == System.Windows.Forms.DialogResult.Yes)
+            if (System.Windows.Forms.MessageBox.Show(form, newPathVar, "Is this correct?", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk, System.Windows.Forms.MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
             {
-                return true;
                 Environment.SetEnvironmentVariable("path", newPathVar, EnvironmentVariableTarget.Process);
+                return true;
             }
             return false;
         }

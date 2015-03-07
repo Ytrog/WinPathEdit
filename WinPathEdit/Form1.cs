@@ -16,12 +16,13 @@ namespace WinPathEdit
         public Form1()
         {
             InitializeComponent();
+            _pathManager = new WinPathManager();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            _pathManager = new WinPathManager();
             dgvPaths.DataSource = _pathManager.Table;
+            
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)

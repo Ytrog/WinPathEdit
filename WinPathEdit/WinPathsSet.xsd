@@ -21,9 +21,5 @@
         </xs:element>
       </xs:choice>
     </xs:complexType>
-    <xs:unique name="Constraint1">
-      <xs:selector xpath=".//mstns:PathVar" />
-      <xs:field xpath="mstns:Var" />
-    </xs:unique>
   </xs:element>
 </xs:schema>
