@@ -17,6 +17,26 @@ namespace WinPathEdit
         {
             InitializeComponent();
             _pathManager = new WinPathManager();
+            _pathManager.TargetChanged += _pathManager_TargetChanged;
+        }
+
+        private void _pathManager_TargetChanged(object sender, EnvironmentVariableTarget currentTarget)
+        {
+            switch (currentTarget)
+            {
+                case EnvironmentVariableTarget.Machine:
+                    btnVarType.Text = "User";
+                    break;
+                case EnvironmentVariableTarget.Process:
+                    break;
+                case EnvironmentVariableTarget.User:
+                    btnVarType.Text = "Machine";
+                    break;
+                default:
+                    break;
+
+                    
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -28,6 +48,27 @@ namespace WinPathEdit
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             _pathManager.UpdatePath(this);
+        }
+
+        private void btnVarType_Click(object sender, EventArgs e)
+        {
+            ChangeType();
+        }
+
+        private void ChangeType()
+        {
+            string text = btnVarType.Text;
+            string user = EnvironmentVariableTarget.User.AsString();
+            string machine = EnvironmentVariableTarget.Machine.AsString();
+
+            if (text.Equals(user))
+            {
+                _pathManager.SetTargetUser();
+            }
+            if (text.Equals(machine))
+            {
+                _pathManager.SetTargetMachine();
+            }
         }
     }
 }

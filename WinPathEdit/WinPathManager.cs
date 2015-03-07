@@ -12,7 +12,7 @@ namespace WinPathEdit
     class WinPathManager
     {
 
-        private readonly EnvironmentVariableTarget _target = EnvironmentVariableTarget.Machine; 
+        private EnvironmentVariableTarget _target;
 
         public string PathVar { get; private set; }
 
@@ -20,8 +20,11 @@ namespace WinPathEdit
 
         public WinPathsSet.PathVarDataTable Table { get; private set; }
 
+        public event EventHandler<EnvironmentVariableTarget> TargetChanged;
+
         public WinPathManager()
         {
+            SetTargetMachine();
             SetValues();
         }
 
@@ -61,7 +64,16 @@ namespace WinPathEdit
 
         private void InitiateDataSet()
         {
-            Table = new WinPathsSet.PathVarDataTable();
+
+            if (Table == null)
+            {
+                Table = new WinPathsSet.PathVarDataTable(); 
+            }
+            else
+            {
+                Table.Clear();
+            }
+
             foreach (string v in Values)
             {
                 Table.AddPathVarRow(v);
@@ -93,6 +105,36 @@ namespace WinPathEdit
                     
             }
             return null;
+        }
+
+        public void SetTargetMachine()
+        {
+            SetTarget(EnvironmentVariableTarget.Machine);
+        }
+
+        public void SetTargetUser()
+        {
+            SetTarget(EnvironmentVariableTarget.User);
+        }
+
+        public void SetTargetProcess()
+        {
+            SetTarget(EnvironmentVariableTarget.Process);
+        }
+
+        private void SetTarget(EnvironmentVariableTarget target)
+        {
+            _target = target;
+            SetTargetChanged();
+        }
+
+        private void SetTargetChanged()
+        {
+            SetValues();
+            if (TargetChanged != null)
+            {
+                TargetChanged(this, _target);
+            }
         }
     }
 }
