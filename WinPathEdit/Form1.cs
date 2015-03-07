@@ -70,5 +70,30 @@ namespace WinPathEdit
                 _pathManager.SetTargetMachine();
             }
         }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvPaths.SelectedRows.Count > 0)
+            {
+                foreach (DataGridViewRow row in dgvPaths.SelectedRows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        dgvPaths.Rows.Remove(row);
+                    }
+                }
+            }
+            else if (dgvPaths.SelectedCells.Count > 0)
+            {
+                foreach (DataGridViewCell cell in dgvPaths.SelectedCells)
+                {
+                    DataGridViewRow row = cell.OwningRow;
+                    if (!row.IsNewRow)
+                    {
+                        dgvPaths.Rows.Remove(row);
+                    }
+                }
+            }
+        }
     }
 }
