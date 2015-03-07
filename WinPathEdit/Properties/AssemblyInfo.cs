@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WinPathEdit")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Info Support")]
+[assembly: AssemblyCompany("Ytrog")]
 [assembly: AssemblyProduct("WinPathEdit")]
-[assembly: AssemblyCopyright("Copyright © Info Support 2015")]
+[assembly: AssemblyCopyright("Copyright © Ytrog 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
