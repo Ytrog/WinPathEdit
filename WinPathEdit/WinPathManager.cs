@@ -30,10 +30,14 @@ namespace WinPathEdit
             InitiateDataSet();
         }
 
-        public bool UpdatePath()
+        public bool UpdatePath(Form1 form)
         {
+            if (form == null)
+            {
+                return false;
+            }
             string newPathVar = ConvertDataSetToString();
-            Environment.SetEnvironmentVariable("path", "", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("path", newPathVar, EnvironmentVariableTarget.Process);
             return false;
         }
 
