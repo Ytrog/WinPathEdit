@@ -21,7 +21,7 @@ namespace WinPathEdit
         private void Form1_Load(object sender, EventArgs e)
         {
             _pathManager = new WinPathManager();
-            
+            dgvPaths.DataSource
         }
     }
 }

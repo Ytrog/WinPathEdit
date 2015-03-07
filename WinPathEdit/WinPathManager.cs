@@ -22,7 +22,11 @@ namespace WinPathEdit
             Values = PathVar.Split(';');
         }
 
+        public bool UpdatePath()
+        {
 
+            return false;
+        }
 
     }
 }
