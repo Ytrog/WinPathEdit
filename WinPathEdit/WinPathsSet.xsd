@@ -1,16 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
-<xs:schema id="WinPathsSet" 
-                  targetNamespace="http://tempuri.org/WinPathsSet.xsd"
-                  elementFormDefault="qualified"
-                  attributeFormDefault="qualified"
-                  xmlns="http://tempuri.org/WinPathsSet.xsd"
-                  xmlns:mstns="http://tempuri.org/WinPathsSet.xsd"
-                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                  xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
-                  xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
-    <xs:element name="WinPathsSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true">
-        <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded"></xs:choice>
-        </xs:complexType>
-    </xs:element>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="WinPathsSet" targetNamespace="http://tempuri.org/WinPathsSet.xsd" xmlns:mstns="http://tempuri.org/WinPathsSet.xsd" xmlns="http://tempuri.org/WinPathsSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="WinPathsSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="WinPathsSet" msprop:Generator_UserDSName="WinPathsSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="PathVar" msprop:Generator_TableClassName="PathVarDataTable" msprop:Generator_TableVarName="tablePathVar" msprop:Generator_TablePropName="PathVar" msprop:Generator_RowDeletingName="PathVarRowDeleting" msprop:Generator_RowChangingName="PathVarRowChanging" msprop:Generator_RowEvHandlerName="PathVarRowChangeEventHandler" msprop:Generator_RowDeletedName="PathVarRowDeleted" msprop:Generator_UserTableName="PathVar" msprop:Generator_RowChangedName="PathVarRowChanged" msprop:Generator_RowEvArgName="PathVarRowChangeEvent" msprop:Generator_RowClassName="PathVarRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Var" msprop:Generator_ColumnVarNameInTable="columnVar" msprop:Generator_ColumnPropNameInRow="Var" msprop:Generator_ColumnPropNameInTable="VarColumn" msprop:Generator_UserColumnName="Var" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1">
+      <xs:selector xpath=".//mstns:PathVar" />
+      <xs:field xpath="mstns:Var" />
+    </xs:unique>
+  </xs:element>
 </xs:schema>
