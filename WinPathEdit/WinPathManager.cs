@@ -41,6 +41,7 @@ namespace WinPathEdit
             if (System.Windows.Forms.MessageBox.Show(form, newPathVar, "Is this correct?", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk, System.Windows.Forms.MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
             {
                 Environment.SetEnvironmentVariable("path", newPathVar, EnvironmentVariableTarget.Process);
+                SetValues();
                 return true;
             }
             return false;
