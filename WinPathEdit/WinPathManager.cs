@@ -12,6 +12,8 @@ namespace WinPathEdit
     class WinPathManager
     {
 
+        private readonly EnvironmentVariableTarget _target = EnvironmentVariableTarget.Machine; 
+
         public string PathVar { get; private set; }
 
         public string[] Values { get; private set; }
@@ -25,7 +27,7 @@ namespace WinPathEdit
 
         private void SetValues()
         {
-            PathVar = Environment.GetEnvironmentVariable("path", EnvironmentVariableTarget.Process);
+            PathVar = Environment.GetEnvironmentVariable("path", _target);
             Values = PathVar.Split(';');
             InitiateDataSet();
         }
@@ -40,7 +42,17 @@ namespace WinPathEdit
 
             if (System.Windows.Forms.MessageBox.Show(form, newPathVar, "Is this correct?", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk, System.Windows.Forms.MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
             {
-                Environment.SetEnvironmentVariable("path", newPathVar, EnvironmentVariableTarget.Process);
+
+                try
+                {
+                    Environment.SetEnvironmentVariable("path", newPathVar, _target);
+                }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(form, e.Message, "Error",  System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    SetValues();
+                    return false;
+                }
                 SetValues();
                 return true;
             }
