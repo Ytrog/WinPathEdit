@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using WinPathEdit.Properties;
 
 namespace WinPathEdit
 {
@@ -13,6 +15,7 @@ namespace WinPathEdit
     {
 
         private EnvironmentVariableTarget _target;
+        private const int _lengthLimit = 2047;
 
         #region Properties
 
@@ -50,7 +53,7 @@ namespace WinPathEdit
             }
             string newPathVar = ConvertDataSetToString();
 
-            if (System.Windows.Forms.MessageBox.Show(form, newPathVar, "Is this correct?", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk, System.Windows.Forms.MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+            if (ValidateString(newPathVar, true) && MessageBox.Show(form, newPathVar, Resources.WinPathManager_UpdatePath_Is_this_correct_, MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
 
                 try
@@ -59,7 +62,7 @@ namespace WinPathEdit
                 }
                 catch (Exception e)
                 {
-                    System.Windows.Forms.MessageBox.Show(form, e.Message, "Error",  System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    MessageBox.Show(form, e.Message, Resources.WinPathManager_UpdatePath_Error,  MessageBoxButtons.OK, MessageBoxIcon.Error);
                     SetValues();
                     return false;
                 }
@@ -88,9 +91,21 @@ namespace WinPathEdit
 
         #region Private methods
 
-        private bool ValidateString(string pathString)
+        private bool ValidateString(string pathString, bool showWarning)
         {
-            return false;
+            if (pathString.Length > _lengthLimit)
+            {
+                return showWarning ? LengthWarning() : false;
+            }
+
+            return true;
+        }
+
+        private bool LengthWarning()
+        {
+            DialogResult result = MessageBox.Show(Resources.WinPathManager_ShowLengthWarning_path_too_long, Resources.WinPathManager_ShowLengthWarning_Warning, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+            return result == DialogResult.OK;
         }
 
         private string ConvertDataSetToString()
@@ -156,6 +171,7 @@ namespace WinPathEdit
         private void SetValues()
         {
             PathVar = Environment.GetEnvironmentVariable("path", _target);
+            ValidateString(PathVar, true);
             Values = PathVar.Split(';');
             InitiateDataSet();
         }
