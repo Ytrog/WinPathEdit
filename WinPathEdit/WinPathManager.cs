@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using WinPathEdit.Properties;
 
 namespace WinPathEdit
 {
@@ -13,6 +15,9 @@ namespace WinPathEdit
     {
 
         private EnvironmentVariableTarget _target;
+        private const int _lengthLimit = 2047;
+
+        #region Properties
 
         public string PathVar { get; private set; }
 
@@ -20,7 +25,15 @@ namespace WinPathEdit
 
         public WinPathsSet.PathVarDataTable Table { get; private set; }
 
+        #endregion
+
+        #region Events
+
         public event EventHandler<EnvironmentVariableTarget> TargetChanged;
+
+        #endregion
+
+        #region ctors
 
         public WinPathManager()
         {
@@ -28,12 +41,9 @@ namespace WinPathEdit
             SetValues();
         }
 
-        private void SetValues()
-        {
-            PathVar = Environment.GetEnvironmentVariable("path", _target);
-            Values = PathVar.Split(';');
-            InitiateDataSet();
-        }
+        #endregion
+
+        #region Public methods
 
         public bool UpdatePath(Form1 form)
         {
@@ -43,7 +53,7 @@ namespace WinPathEdit
             }
             string newPathVar = ConvertDataSetToString();
 
-            if (System.Windows.Forms.MessageBox.Show(form, newPathVar, "Is this correct?", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk, System.Windows.Forms.MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+            if (ValidateString(newPathVar, true) && MessageBox.Show(form, newPathVar, Resources.WinPathManager_UpdatePath_Is_this_correct_, MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
 
                 try
@@ -52,7 +62,7 @@ namespace WinPathEdit
                 }
                 catch (Exception e)
                 {
-                    System.Windows.Forms.MessageBox.Show(form, e.Message, "Error",  System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    MessageBox.Show(form, e.Message, Resources.WinPathManager_UpdatePath_Error,  MessageBoxButtons.OK, MessageBoxIcon.Error);
                     SetValues();
                     return false;
                 }
@@ -62,22 +72,40 @@ namespace WinPathEdit
             return false;
         }
 
-        private void InitiateDataSet()
+        public void SetTargetMachine()
         {
+            SetTarget(EnvironmentVariableTarget.Machine);
+        }
 
-            if (Table == null)
+        public void SetTargetUser()
+        {
+            SetTarget(EnvironmentVariableTarget.User);
+        }
+
+        public void SetTargetProcess()
+        {
+            SetTarget(EnvironmentVariableTarget.Process);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private bool ValidateString(string pathString, bool showWarning)
+        {
+            if (pathString.Length > _lengthLimit)
             {
-                Table = new WinPathsSet.PathVarDataTable(); 
-            }
-            else
-            {
-                Table.Clear();
+                return showWarning ? LengthWarning() : false;
             }
 
-            foreach (string v in Values)
-            {
-                Table.AddPathVarRow(v);
-            }
+            return true;
+        }
+
+        private bool LengthWarning()
+        {
+            DialogResult result = MessageBox.Show(Resources.WinPathManager_ShowLengthWarning_path_too_long, Resources.WinPathManager_ShowLengthWarning_Warning, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+            return result == DialogResult.OK;
         }
 
         private string ConvertDataSetToString()
@@ -107,19 +135,22 @@ namespace WinPathEdit
             return null;
         }
 
-        public void SetTargetMachine()
+        private void InitiateDataSet()
         {
-            SetTarget(EnvironmentVariableTarget.Machine);
-        }
 
-        public void SetTargetUser()
-        {
-            SetTarget(EnvironmentVariableTarget.User);
-        }
+            if (Table == null)
+            {
+                Table = new WinPathsSet.PathVarDataTable(); 
+            }
+            else
+            {
+                Table.Clear();
+            }
 
-        public void SetTargetProcess()
-        {
-            SetTarget(EnvironmentVariableTarget.Process);
+            foreach (string v in Values)
+            {
+                Table.AddPathVarRow(v);
+            }
         }
 
         private void SetTarget(EnvironmentVariableTarget target)
@@ -136,5 +167,15 @@ namespace WinPathEdit
                 TargetChanged(this, _target);
             }
         }
+
+        private void SetValues()
+        {
+            PathVar = Environment.GetEnvironmentVariable("path", _target);
+            ValidateString(PathVar, true);
+            Values = PathVar.Split(';');
+            InitiateDataSet();
+        }
+
+        #endregion
     }
 }
