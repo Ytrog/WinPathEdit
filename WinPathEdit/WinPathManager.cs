@@ -14,13 +14,23 @@ namespace WinPathEdit
 
         private EnvironmentVariableTarget _target;
 
+        #region Properties
+
         public string PathVar { get; private set; }
 
         public string[] Values { get; private set; }
 
         public WinPathsSet.PathVarDataTable Table { get; private set; }
 
+        #endregion
+
+        #region Events
+
         public event EventHandler<EnvironmentVariableTarget> TargetChanged;
+
+        #endregion
+
+        #region ctors
 
         public WinPathManager()
         {
@@ -28,12 +38,9 @@ namespace WinPathEdit
             SetValues();
         }
 
-        private void SetValues()
-        {
-            PathVar = Environment.GetEnvironmentVariable("path", _target);
-            Values = PathVar.Split(';');
-            InitiateDataSet();
-        }
+        #endregion
+
+        #region Public methods
 
         public bool UpdatePath(Form1 form)
         {
@@ -62,22 +69,28 @@ namespace WinPathEdit
             return false;
         }
 
-        private void InitiateDataSet()
+        public void SetTargetMachine()
         {
+            SetTarget(EnvironmentVariableTarget.Machine);
+        }
 
-            if (Table == null)
-            {
-                Table = new WinPathsSet.PathVarDataTable(); 
-            }
-            else
-            {
-                Table.Clear();
-            }
+        public void SetTargetUser()
+        {
+            SetTarget(EnvironmentVariableTarget.User);
+        }
 
-            foreach (string v in Values)
-            {
-                Table.AddPathVarRow(v);
-            }
+        public void SetTargetProcess()
+        {
+            SetTarget(EnvironmentVariableTarget.Process);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private bool ValidateString(string pathString)
+        {
+            return false;
         }
 
         private string ConvertDataSetToString()
@@ -107,19 +120,22 @@ namespace WinPathEdit
             return null;
         }
 
-        public void SetTargetMachine()
+        private void InitiateDataSet()
         {
-            SetTarget(EnvironmentVariableTarget.Machine);
-        }
 
-        public void SetTargetUser()
-        {
-            SetTarget(EnvironmentVariableTarget.User);
-        }
+            if (Table == null)
+            {
+                Table = new WinPathsSet.PathVarDataTable(); 
+            }
+            else
+            {
+                Table.Clear();
+            }
 
-        public void SetTargetProcess()
-        {
-            SetTarget(EnvironmentVariableTarget.Process);
+            foreach (string v in Values)
+            {
+                Table.AddPathVarRow(v);
+            }
         }
 
         private void SetTarget(EnvironmentVariableTarget target)
@@ -136,5 +152,14 @@ namespace WinPathEdit
                 TargetChanged(this, _target);
             }
         }
+
+        private void SetValues()
+        {
+            PathVar = Environment.GetEnvironmentVariable("path", _target);
+            Values = PathVar.Split(';');
+            InitiateDataSet();
+        }
+
+        #endregion
     }
 }
